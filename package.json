@@ -4,13 +4,26 @@
   "description": "",
   "main": "build/index.js",
   "scripts": {
+    "clean": "rm -rf build",
     "build": "pnpm clean && tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "prettier": "prettier --ignore-path .prettierignore .",
+    "format": "pnpm prettier --write"
   },
   "keywords": [],
   "author": "Kinzang Dorji",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "devDependencies": {
-    "typescript": "^5.9.2"
+    "@types/node": "^24.2.0",
+    "@types/uuid": "^10.0.0",
+    "@vitest/ui": "^3.2.4",
+    "ethers": "^6.15.0",
+    "hardhat": "^2.26.1",
+    "prettier": "^3.6.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2",
+    "uuid": "^11.1.0",
+    "vitest": "^3.2.4"
   }
 }
