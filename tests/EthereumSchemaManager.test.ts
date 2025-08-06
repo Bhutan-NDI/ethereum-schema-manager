@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, vi } from 'vitest'
+import { describe, it, expect, beforeAll } from 'vitest'
 import { ethers, TransactionReceipt } from 'ethers'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -7,7 +7,6 @@ import {
   ethSchemaManagerAdminConfig,
   ethSchemaManagerClientConfig,
   testSchemaSample,
-  txnTimeOut,
 } from './test.data'
 import {
   ContractError,

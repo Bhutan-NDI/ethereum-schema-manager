@@ -16,7 +16,6 @@ export const ethSchemaManagerAdminConfig: SchemaManagerConfig = {
   contractAddress: '0x0e54FD0c32271a4512972Dc9d46cAb74272ae1bb',
 }
 
-export const txnTimeOut = 30000
 export const testSchemaSample = {
   '@context': [
     {
