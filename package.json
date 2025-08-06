@@ -1,0 +1,55 @@
+{
+  "name": "@ayanworks/polygon-schema-manager",
+  "version": "1.0.1-alpha.1",
+  "description": "Polygon schema manager",
+  "main": "build/index.js",
+  "files": [
+    "build"
+  ],
+  "scripts": {
+    "clean": "rm -rf build",
+    "clean:deps": "pnpm clean && rm -rf node_modules",
+    "build": "pnpm clean && tsc",
+    "test": "node --require ts-node/register --test ./tests/schema-manager.test.ts",
+    "prettier": "prettier --ignore-path .prettierignore .",
+    "check-format": "pnpm prettier --list-different",
+    "check-types": "pnpm build --noEmit",
+    "format": "pnpm prettier --write",
+    "release": "release-it"
+  },
+  "keywords": [],
+  "author": "Sai Ranjit Tummalapalli",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@ayanworks/polygon-did-registry-contract": "3.0.0",
+    "@ayanworks/polygon-did-resolver": "1.0.0",
+    "axios": "^1.6.3",
+    "did-resolver": "^4.1.0",
+    "keccak256": "^1.0.6",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-verify": "^2.1.1",
+    "@nomiclabs/hardhat-ethers": "^2.2.3",
+    "@openzeppelin/hardhat-upgrades": "^1.28.0",
+    "@types/node": "^18.17.0",
+    "@types/uuid": "^9.0.7",
+    "dotenv": "^16.0.2",
+    "ethers": "^5.8.0",
+    "hardhat": "^2.19.4",
+    "mocha": "^7.0.0",
+    "prettier": "^3.0.2",
+    "release-it": "^16.1.5",
+    "solc": "0.8.16",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.6"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ayanworks/polygon-schema-manager.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ayanworks/polygon-schema-manager/issues"
+  },
+  "homepage": "https://github.com/ayanworks/polygon-schema-manager#readme"
+}
