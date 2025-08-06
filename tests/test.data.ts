@@ -1,9 +1,22 @@
-export const privateKey =
-  '3f6254328fa58202094c954d89964119830f85e2f4bfdbabb1d8bcfc008d2fdd'
-export const rpcUrl =
-  'https://eth-sepolia.g.alchemy.com/v2/XUo--fMnn250sIOxldOhx1J9-rput18B'
-export const contractAddress = '0xc7336Ea25657Ce7B2E9B8A28624C173C2B80F9c9'
+import { SchemaManagerConfig } from '../src/types/EthereumSchemaManager.types'
 
+export const ethSchemaManagerClientConfig: SchemaManagerConfig = {
+  privateKey:
+    '3f6254328fa58202094c954d89964119830f85e2f4bfdbabb1d8bcfc008d2fdd',
+  rpcUrl:
+    'https://eth-sepolia.g.alchemy.com/v2/XUo--fMnn250sIOxldOhx1J9-rput18B',
+  contractAddress: '0x0e54FD0c32271a4512972Dc9d46cAb74272ae1bb',
+}
+
+export const ethSchemaManagerAdminConfig: SchemaManagerConfig = {
+  privateKey:
+    'c0fe3af6dc7188d1badd556303c8e3f1d60c19df3d84a380a16335a2d9a9c65e',
+  rpcUrl:
+    'https://eth-sepolia.g.alchemy.com/v2/XUo--fMnn250sIOxldOhx1J9-rput18B',
+  contractAddress: '0x0e54FD0c32271a4512972Dc9d46cAb74272ae1bb',
+}
+
+export const txnTimeOut = 30000
 export const testSchemaSample = {
   '@context': [
     {
