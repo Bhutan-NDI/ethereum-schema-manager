@@ -3,7 +3,6 @@ import {
   ContractTransactionReceipt,
   isAddress,
   JsonRpcProvider,
-  TransactionReceipt,
   Wallet,
 } from 'ethers'
 
@@ -27,12 +26,13 @@ export class EthereumSchemaManager {
 
     try {
       this.provider = new JsonRpcProvider(config.rpcUrl)
-      this.wallet = new Wallet(config.privateKey, this.provider)
-      this.schemaRegistryContract = new Contract(
-        config.contractAddress,
-        abi,
-        this.wallet,
-      )
+
+      if (config.privateKey) {
+        this.wallet = new Wallet(config.privateKey, this.provider);
+        this.schemaRegistryContract = new Contract(config.contractAddress, abi, this.wallet);
+      } else {
+        this.schemaRegistryContract = new Contract(config.contractAddress, abi, this.provider);
+      }
     } catch (error) {
       throw new NetworkError(
         `Failed to initialize EthereumSchemaManager: ${error instanceof Error ? error.message : 'Unknown error'}`,
@@ -59,7 +59,7 @@ export class EthereumSchemaManager {
   async createSchema(
     schemaId: string,
     json: string,
-  ): Promise<TransactionReceipt> {
+  ): Promise<ContractTransactionReceipt> {
     if (!this.wallet) {
       throw new ValidationError('Wallet is required for transaction operations')
     }
@@ -85,7 +85,7 @@ export class EthereumSchemaManager {
     address: string,
     schemaId: string,
     json: string,
-  ): Promise<TransactionReceipt> {
+  ): Promise<ContractTransactionReceipt> {
     if (!this.wallet) {
       throw new ValidationError('Wallet is required for transaction operations')
     }

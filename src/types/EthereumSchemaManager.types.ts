@@ -1,7 +1,7 @@
 export interface SchemaManagerConfig {
   contractAddress: string
   rpcUrl: string
-  privateKey: string
+  privateKey?: string
 }
 
 // Custom error classes
