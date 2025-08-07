@@ -138,7 +138,6 @@ pnpm run test
 pnpm run test:ui
 ```
 
-
 ## Smart Contract Development
 
 Foundry docs: https://book.getfoundry.sh/
@@ -164,16 +163,19 @@ forge snapshot
 ### Deploy
 
 Create a `.env` file with your private key:
+
 ```
 PRIVATE_KEY=your_private_key_here
 ```
 
 First run a simulation without broadcasting:
+
 ```shell
 forge script script/SchemaRegistry.s.sol:SchemaRegistryScript --rpc-url <your_rpc_url>
 ```
 
 If the simulation is successful, run with `--broadcast` to deploy:
+
 ```shell
 forge script script/SchemaRegistry.s.sol:SchemaRegistryScript --rpc-url <your_rpc_url> --broadcast
 ```
@@ -191,4 +193,3 @@ forge --help
 3. Commit your changes (`git commit -m 'Add some amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
-
