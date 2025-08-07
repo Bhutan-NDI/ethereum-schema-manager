@@ -2,7 +2,7 @@
 pragma solidity ^0.8.13;
 
 import {Script, console} from "forge-std/Script.sol";
-import {SchemaRegistry} from "../src/SchemaRegistry.sol";
+import {SchemaRegistry} from "../contract/SchemaRegistry.sol";
 
 contract SchemaRegistryScript is Script {
     SchemaRegistry public schemaRegistry;
