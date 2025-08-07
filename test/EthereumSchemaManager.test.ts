@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll } from 'vitest'
-import { ethers, TransactionReceipt } from 'ethers'
+import { ContractTransactionReceipt, ethers } from 'ethers'
 import { v4 as uuidv4 } from 'uuid'
 
 import { EthereumSchemaManager } from '../src/EthereumSchemaManager'
@@ -153,7 +153,7 @@ describe('Admin Schema Management:', () => {
 })
 
 const expectValidTransactionReceipt = (
-  receipt: TransactionReceipt,
+  receipt: ContractTransactionReceipt,
   expectedStatus: number = 1,
 ) => {
   // Core TransactionReceipt properties
