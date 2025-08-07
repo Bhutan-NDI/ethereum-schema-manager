@@ -142,7 +142,7 @@ export class EthereumSchemaManager {
     this.validateAddress(address)
 
     try {
-      const schemaIds = await this.schemaRegistryContract.schemaIds(address)
+      const schemaIds = await this.schemaRegistryContract.getSchemaIds(address)
       return schemaIds
     } catch (error: any) {
       return await this.handleContractError(error)
