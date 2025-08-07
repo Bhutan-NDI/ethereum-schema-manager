@@ -6,7 +6,7 @@ import {SchemaRegistry} from "../contract/SchemaRegistry.sol";
 
 contract SchemaRegistryScript is Script {
     SchemaRegistry public schemaRegistry;
-    address owner = address(101); // TODO update owner
+    address owner = 0xYourOwnerAddressHere; // TODO update owner
 
     function setUp() public {}
 
