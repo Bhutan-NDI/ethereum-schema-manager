@@ -28,10 +28,18 @@ export class EthereumSchemaManager {
       this.provider = new JsonRpcProvider(config.rpcUrl)
 
       if (config.privateKey) {
-        this.wallet = new Wallet(config.privateKey, this.provider);
-        this.schemaRegistryContract = new Contract(config.contractAddress, abi, this.wallet);
+        this.wallet = new Wallet(config.privateKey, this.provider)
+        this.schemaRegistryContract = new Contract(
+          config.contractAddress,
+          abi,
+          this.wallet,
+        )
       } else {
-        this.schemaRegistryContract = new Contract(config.contractAddress, abi, this.provider);
+        this.schemaRegistryContract = new Contract(
+          config.contractAddress,
+          abi,
+          this.provider,
+        )
       }
     } catch (error) {
       throw new NetworkError(

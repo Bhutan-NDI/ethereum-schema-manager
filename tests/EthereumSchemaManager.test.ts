@@ -27,12 +27,11 @@ describe('Client Schema Management:', () => {
     provider = new ethers.JsonRpcProvider(ethSchemaManagerClientConfig.rpcUrl)
 
     if (ethSchemaManagerClientConfig.privateKey) {
-        wallet = new ethers.Wallet(
-            ethSchemaManagerClientConfig.privateKey,
-            provider,
-          )
+      wallet = new ethers.Wallet(
+        ethSchemaManagerClientConfig.privateKey,
+        provider,
+      )
     }
-    
   })
   it('client should successfully create a new schema', async () => {
     const tx = await client.createSchema(testSchemaId, schemaJSON)
@@ -100,7 +99,10 @@ describe('Admin Schema Management:', () => {
     testSchemaId = uuidv4()
     provider = new ethers.JsonRpcProvider(ethSchemaManagerAdminConfig.rpcUrl)
     if (ethSchemaManagerAdminConfig.privateKey) {
-        wallet = new ethers.Wallet(ethSchemaManagerAdminConfig.privateKey, provider)
+      wallet = new ethers.Wallet(
+        ethSchemaManagerAdminConfig.privateKey,
+        provider,
+      )
     }
   })
 
