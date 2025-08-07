@@ -131,10 +131,21 @@ export class EthereumSchemaManager {
       }
       return schema
     } catch (error: any) {
-      throw new NetworkError(
-        `Failed to get schema: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        error as Error,
-      )
+      return await this.handleContractError(error)
+    }
+  }
+
+  /**
+   * Get list of schema Id by address
+   */
+  async getSchemaIds(address: string): Promise<string[]> {
+    this.validateAddress(address)
+
+    try {
+      const schemaIds = await this.schemaRegistryContract.schemaIds(address)
+      return schemaIds
+    } catch (error: any) {
+      return await this.handleContractError(error)
     }
   }
 
@@ -146,10 +157,7 @@ export class EthereumSchemaManager {
       const owner = await this.schemaRegistryContract.owner()
       return owner
     } catch (error) {
-      throw new NetworkError(
-        `Failed to get owner: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        error as Error,
-      )
+      return await this.handleContractError(error)
     }
   }
 

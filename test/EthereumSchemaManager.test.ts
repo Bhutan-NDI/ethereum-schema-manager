@@ -62,6 +62,12 @@ describe('Client Schema Management:', () => {
     expect(retrieved).toBe(schemaJSON)
   })
 
+  it('should retrieve the list of schema Id', async () => {
+    const result = await client.getSchemaIds(wallet.address)
+    expect(Array.isArray(result)).toBe(true)
+    expect(result.every((id) => typeof id === 'string')).toBe(true)
+  })
+
   it('should return null when schema does not exist', async () => {
     const newSchemaId = uuidv4()
     const result = await client.getSchema(wallet.address, newSchemaId)
