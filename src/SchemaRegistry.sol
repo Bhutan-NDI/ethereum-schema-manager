@@ -41,5 +41,6 @@ contract SchemaRegistry is Ownable {
     ) external onlyOwner {
         require(bytes(schemas[_id][newSchemaId]).length == 0, "SCHEMA_EXISTS");
         schemas[_id][newSchemaId] = _json;
+        emit SchemaCreate(_id, newSchemaId);
     }
 }
