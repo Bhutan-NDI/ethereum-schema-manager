@@ -25,10 +25,14 @@ describe('Client Schema Management:', () => {
     client = new EthereumSchemaManager(ethSchemaManagerClientConfig)
     testSchemaId = uuidv4()
     provider = new ethers.JsonRpcProvider(ethSchemaManagerClientConfig.rpcUrl)
-    wallet = new ethers.Wallet(
-      ethSchemaManagerClientConfig.privateKey,
-      provider,
-    )
+
+    if (ethSchemaManagerClientConfig.privateKey) {
+        wallet = new ethers.Wallet(
+            ethSchemaManagerClientConfig.privateKey,
+            provider,
+          )
+    }
+    
   })
   it('client should successfully create a new schema', async () => {
     const tx = await client.createSchema(testSchemaId, schemaJSON)
@@ -95,7 +99,9 @@ describe('Admin Schema Management:', () => {
     admin = new EthereumSchemaManager(ethSchemaManagerAdminConfig)
     testSchemaId = uuidv4()
     provider = new ethers.JsonRpcProvider(ethSchemaManagerAdminConfig.rpcUrl)
-    wallet = new ethers.Wallet(ethSchemaManagerAdminConfig.privateKey, provider)
+    if (ethSchemaManagerAdminConfig.privateKey) {
+        wallet = new ethers.Wallet(ethSchemaManagerAdminConfig.privateKey, provider)
+    }
   })
 
   it('should allow admin to create schema for other addresses', async () => {
