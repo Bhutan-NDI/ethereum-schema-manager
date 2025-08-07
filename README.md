@@ -1,44 +1,147 @@
 # ethereum-schema-manager
 
-The repository contains the schema smart contract and the functions for using Ethereum Blockchain.
+A TypeScript client for interacting with SchemaRegistry smart contract on Ethereum networks.
 
-# Schema Operations
+## Features
 
-## Create Schema
+- **Create Schema**: Create a new JSON-LD credential schema. This method allows users to define the structure and properties of the credential schema.
 
-Create a new JSON-LD credential schema. This method allows users to define the structure and properties of the credential schema.
+- **Get Schema by ID**: Retrieves schema details by its unique ID.
 
-## Get Schema by ID
+- **Admin Create Schema**: Admin or contract owner can create a new JSON-LD credential schema for other address. This method allows definining the structure and properties of the credential schema.
 
-Retrieves schema details by its unique ID.
-
-## Admin Create Schema
-
-Admin or contract owner can create a new JSON-LD credential schema for other address. This method allows definining the structure and properties of the credential schema.
+- **Transfer Ownership**: Admin or contract owner can change the owner to different address. This method allows the transfer of ownership to another address.
 
 ## 🛠️ Installation
 
-**Clone the repository**:
-
 ```bash
-git clone https://github.com/Bhutan-NDI/ethereum-schema-manager.git
-cd ethereum-schema-manager
+npm install @bhutan-ndi/ethereum-schema-manager ethers
 ```
 
-**Install dependencies**:
+## Quick Start
 
-```bash
-pnpm i
+### Read-Only Operations
+
+```typescript
+import { EthereumSchemaManager } from '@bhutan-ndi/ethereum-schema-manager'
+
+const client = new EthereumSchemaManager({
+  contractAddress: '0x1234567890123456789012345678901234567890',
+  rpcUrl: 'https://sepolia.infura.io/v3/YOUR-PROJECT-ID',
+})
+
+// Get schema
+const schema = await client.getSchema(ownerAddress, 'my-schema-id')
+console.log(schema?.json)
+
+// Get contract owner
+const owner = await client.getOwner()
 ```
 
-**Run unit tests**:
+### Transactional Operations
 
-```bash
-pnpm test
+```typescript
+import { EthereumSchemaManager } from '@bhutan-ndi/ethereum-schema-manager'
+
+const client = new EthereumSchemaManager({
+  contractAddress: '0x1234567890123456789012345678901234567890',
+  rpcUrl: 'https://sepolia.infura.io/v3/YOUR-PROJECT-ID',
+  privateKey: '0xYOUR-PRIVATE-KEY',
+})
+
+// Create a schema
+try {
+  const receipt = await client.createSchema('my-schema', schemaObject)
+
+  console.log(`Schema created! Transaction: ${receipt.hash}`)
+  console.log(`Gas used: ${receipt.gasUsed}`)
+  console.log(`Status: ${receipt.status}`)
+} catch (error) {
+  if (error instanceof ContractError) {
+    console.error('Contract error:', error.revertReason)
+  } else if (error instanceof ValidationError) {
+    console.error('Validation error:', error.message)
+  }
+}
 ```
 
-**Run unit tests with GUI**:
+## Configuration
+
+```typescript
+interface SchemaManagerConfig {
+  contractAddress: string // Smart contract address
+  rpcUrl: string // Ethereum RPC endpoint
+  privateKey?: string // Private key for transactions (optional)
+}
+```
+
+## API Reference
+
+### SchemaManager
+
+#### Constructor
+
+- `constructor(config: SchemaManagerConfig)`
+
+#### Read Methods
+
+- `getOwner(): Promise<string>` - Get contract owner address
+- `getSchema(address: string, schemaId: string): Promise<object | null>` - Get schema by owner and ID
+
+#### Transaction Methods (require private key)
+
+- `createSchema(schemaId: string, json: string): Promise<ContractTransactionReceipt>` - Create new schema
+- `adminCreateSchema(address: string, schemaId: string, json: string): Promise<ContractTransactionReceipt>` - Admin create schema for another address
+- `transferOwnership(newOwner: string): Promise<ContractTransactionReceipt>` - Transfer contract ownership
+
+## Error Handling
+
+Specific error types for different scenarios:
+
+```typescript
+import {
+  SchemaRegistryError,
+  ContractError,
+  NetworkError,
+  ValidationError,
+} from '@bhutan-ndi/ethereum-schema-manager'
+
+try {
+  await client.createSchema('invalid', 'invalid-json')
+} catch (error) {
+  if (error instanceof ValidationError) {
+    // Input validation failed
+    console.error('Invalid input:', error.message)
+  } else if (error instanceof ContractError) {
+    // Smart contract rejected transaction
+    console.error('Contract error:', error.revertReason)
+  } else if (error instanceof NetworkError) {
+    // Network/RPC issues
+    console.error('Network error:', error.message)
+  }
+}
+```
+
+## Development
 
 ```bash
-pnpm test:ui
+# Install dependencies
+pnpm install
+
+# Build the package
+pnpm run build
+
+# Run tests
+pnpm run test
+
+## Run tests with GUI
+pnpm run test:ui
 ```
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
