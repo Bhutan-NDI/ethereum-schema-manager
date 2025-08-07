@@ -10,5 +10,7 @@ out/
 # Docs
 docs/
 
+dry-run/
+
 # Dotenv file
 .env
