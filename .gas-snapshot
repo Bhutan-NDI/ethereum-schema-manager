@@ -1,0 +1,8 @@
+SchemaRegistryTest:test_AdminCannotCreateDuplicateSchema() (gas: 133903)
+SchemaRegistryTest:test_AdminCreateSchema() (gas: 134407)
+SchemaRegistryTest:test_CreateSchema() (gas: 154365)
+SchemaRegistryTest:test_EmptySchemaId() (gas: 64200)
+SchemaRegistryTest:test_MultipleSchemasByDifferentUsers() (gas: 161521)
+SchemaRegistryTest:test_OnlyOwnerCanCallAdminCreateSchema() (gas: 17119)
+SchemaRegistryTest:test_OwnerIsSetCorrectly() (gas: 23527)
+SchemaRegistryTest:test_SchemaIdsTracking() (gas: 538459)
