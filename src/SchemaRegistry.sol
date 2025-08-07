@@ -9,6 +9,7 @@ import {Ownable} from "lib/openzeppelin-contracts/contracts/access/Ownable.sol";
  */
 contract SchemaRegistry is Ownable {
     mapping(address _id => mapping(string schemaId => string schema)) public schemas;
+    mapping(address _id => string[] schemaIds) public schemaIds;
 
     event SchemaCreate(address indexed id, string schemaId);
 
@@ -25,6 +26,7 @@ contract SchemaRegistry is Ownable {
     ) external {
         require(bytes(schemas[msg.sender][newSchemaId]).length == 0, "SCHEMA_EXISTS");
         schemas[msg.sender][newSchemaId] = _json;
+        schemaIds[msg.sender].push(newSchemaId);
         emit SchemaCreate(msg.sender, newSchemaId);
     }
 
@@ -41,6 +43,11 @@ contract SchemaRegistry is Ownable {
     ) external onlyOwner {
         require(bytes(schemas[_id][newSchemaId]).length == 0, "SCHEMA_EXISTS");
         schemas[_id][newSchemaId] = _json;
+        schemaIds[_id].push(newSchemaId);
         emit SchemaCreate(_id, newSchemaId);
+    }
+
+    function getSchemaIds(address _id) external view returns (string[] memory) {
+        return schemaIds[_id];
     }
 }

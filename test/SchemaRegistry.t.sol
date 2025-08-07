@@ -72,7 +72,7 @@ contract SchemaRegistryTest is Test {
     }
 
     function test_AdminCreateSchema() public {
-        string memory schemaId = "admin-created-schema";
+        string memory schemaId = "8ba86c10-99e3-4b9c-81eb-0fd8d13023aa";
         string memory schemaJson = '{"type":"object","admin":true}';
 
         // Test admin can create schema for alice
@@ -85,7 +85,7 @@ contract SchemaRegistryTest is Test {
     }
 
     function test_AdminCannotCreateDuplicateSchema() public {
-        string memory schemaId = "duplicate-test";
+        string memory schemaId = "8ba86c10-99e3-4b9c-81eb-0fd8d13023aa";
         string memory schemaJson = '{"version":1}';
 
         // Alice creates a schema
@@ -100,7 +100,7 @@ contract SchemaRegistryTest is Test {
     }
 
     function test_OnlyOwnerCanCallAdminCreateSchema() public {
-        string memory schemaId = "unauthorized-schema";
+        string memory schemaId = "8ba86c10-99e3-4b9c-81eb-0fd8d13023aa";
         string memory schemaJson = '{"type":"object"}';
 
         // Non-owner tries to call adminCreateSchema
@@ -127,5 +127,72 @@ contract SchemaRegistryTest is Test {
         vm.prank(alice);
         schemaRegistry.renounceOwnership();
         assertEq(schemaRegistry.owner(), address(0));
+    }
+
+    function test_SchemaIdsTracking() public {
+        // Test user-created schemas
+        // Alice creates multiple schemas
+        vm.startPrank(alice);
+        schemaRegistry.createSchema("schema1", '{"id":1}');
+        schemaRegistry.createSchema("schema2", '{"id":2}');
+        schemaRegistry.createSchema("schema3", '{"id":3}');
+        vm.stopPrank();
+
+        // Bob creates schemas
+        vm.startPrank(bob);
+        schemaRegistry.createSchema("schema-a", '{"id":"a"}');
+        schemaRegistry.createSchema("schema-b", '{"id":"b"}');
+        vm.stopPrank();
+
+        // Check Alice's schema IDs using getSchemaIds
+        string[] memory aliceSchemas = schemaRegistry.getSchemaIds(alice);
+        assertEq(aliceSchemas.length, 3);
+        assertEq(aliceSchemas[0], "schema1");
+        assertEq(aliceSchemas[1], "schema2");
+        assertEq(aliceSchemas[2], "schema3");
+
+        // Also test direct access via public mapping
+        assertEq(schemaRegistry.schemaIds(alice, 0), "schema1");
+        assertEq(schemaRegistry.schemaIds(alice, 1), "schema2");
+        assertEq(schemaRegistry.schemaIds(alice, 2), "schema3");
+
+        // Check Bob's schema IDs using getSchemaIds
+        string[] memory bobSchemas = schemaRegistry.getSchemaIds(bob);
+        assertEq(bobSchemas.length, 2);
+        assertEq(bobSchemas[0], "schema-a");
+        assertEq(bobSchemas[1], "schema-b");
+
+        // Also test direct access via public mapping for Bob
+        assertEq(schemaRegistry.schemaIds(bob, 0), "schema-a");
+        assertEq(schemaRegistry.schemaIds(bob, 1), "schema-b");
+
+        // Test admin-created schemas mixed with user-created
+        address charlie = makeAddr("charlie");
+
+        // Owner creates schemas for charlie using admin function
+        vm.startPrank(owner);
+        schemaRegistry.adminCreateSchema(charlie, "admin-schema1", '{"admin":true,"id":1}');
+        schemaRegistry.adminCreateSchema(charlie, "admin-schema2", '{"admin":true,"id":2}');
+        vm.stopPrank();
+
+        // Charlie creates their own schema
+        vm.prank(charlie);
+        schemaRegistry.createSchema("user-schema", '{"admin":false}');
+
+        // Check all schemas are tracked using getSchemaIds
+        string[] memory charlieSchemas = schemaRegistry.getSchemaIds(charlie);
+        assertEq(charlieSchemas.length, 3);
+        assertEq(charlieSchemas[0], "admin-schema1");
+        assertEq(charlieSchemas[1], "admin-schema2");
+        assertEq(charlieSchemas[2], "user-schema");
+
+        // Also test direct access via public mapping for charlie
+        assertEq(schemaRegistry.schemaIds(charlie, 0), "admin-schema1");
+        assertEq(schemaRegistry.schemaIds(charlie, 1), "admin-schema2");
+        assertEq(schemaRegistry.schemaIds(charlie, 2), "user-schema");
+
+        // Check empty user has no schemas
+        string[] memory emptySchemas = schemaRegistry.getSchemaIds(makeAddr("empty"));
+        assertEq(emptySchemas.length, 0);
     }
 }
